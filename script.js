@@ -17,7 +17,7 @@ const gameBoardModule = (function() {
   const cleanBoard = () => {
        
             board = ["", "", "", "", "", "", "", "", ""];
-             console.log(board);
+            
   }
 
     return {
@@ -85,18 +85,18 @@ const gameBoardModule = (function() {
   // Game Controller Module (manages overall game logic)
   // Purpose: This module manages the overall game flow and logic. It keeps track of the current player, switches turns, and handles cell clicks.
   const gameControllerModule = (function() {
-    let currentPlayer = createPlayer("playerOne", "X");
-    let nextPlayer = createPlayer("playerTwo", "O");
-    let activePlayer = currentPlayer.getSymbol()
+    let xPlayer = createPlayer("playerOne", "X");
+    let oPlayer = createPlayer("playerTwo", "O");
+    let activePlayer = xPlayer;
   //I saw some people were doing something like that to switch players
   //But it is not working right now
     
   const switchPlayer = function newFunction(){
-     if(activePlayer == currentPlayer.getName()){
-      activePlayer ==nextPlayer.getName()
+     if(activePlayer == xPlayer){
+      activePlayer =oPlayer;
      } 
   else{
-    activePlayer == currentPlayer.getName()
+    activePlayer = xPlayer;
   }
   return activePlayer;
      }
@@ -107,7 +107,7 @@ const gameBoardModule = (function() {
   
     const handleCellClick = (event) => {
       const clickedIndex = parseInt(event.target.dataset.cellIndex);
-      gameBoardModule.updateBoard(clickedIndex, currentPlayer.getSymbol());
+      gameBoardModule.updateBoard(clickedIndex, activePlayer.getSymbol());
      displayControllerModule.updateGrid();
       
      const board = gameBoardModule.getBoard();
