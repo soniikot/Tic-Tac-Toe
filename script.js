@@ -16,7 +16,7 @@ const gameBoardModule = (function() {
     //I put cleanBoard funciton here because I thougt it fits more into gameBoardModule
   const cleanBoard = () => {
        
-            let board = ["", "", "", "", "", "", "", "", ""];
+            board = ["", "", "", "", "", "", "", "", ""];
              console.log(board);
   }
 
@@ -111,7 +111,7 @@ const gameBoardModule = (function() {
      displayControllerModule.updateGrid();
       
      const board = gameBoardModule.getBoard();
-   const checkWinner = (currentPlayer) =>{
+  /* const checkWinner = (currentPlayer) =>{
       if (board)
    }
       // Check for win or tie (logic needs to be implemented)
@@ -130,7 +130,7 @@ const gameBoardModule = (function() {
 
 checkWinner();{
 
-}
+}*/
   
       switchPlayer();
       
