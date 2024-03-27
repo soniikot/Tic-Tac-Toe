@@ -88,8 +88,6 @@ const gameBoardModule = (function() {
     let xPlayer = createPlayer("playerOne", "X");
     let oPlayer = createPlayer("playerTwo", "O");
     let activePlayer = xPlayer;
-  //I saw some people were doing something like that to switch players
-  //But it is not working right now
     
   const switchPlayer = function newFunction(){
      if(activePlayer == xPlayer){
@@ -110,32 +108,36 @@ const gameBoardModule = (function() {
       gameBoardModule.updateBoard(clickedIndex, activePlayer.getSymbol());
      displayControllerModule.updateGrid();
       
-     const board = gameBoardModule.getBoard();
-  /* const checkWinner = (currentPlayer) =>{
-      if (board)
+     
+     function checkWinners(board){  
+ result = document.querySelector('.comments');
+      if (((board[0]==board[1]&&board[1]==board[2])&&(board[0]!=''))||
+      ((board[3]==board[4]&&board[4]==board[5])&&(board[3]!=''))||
+        (board[6]==board[7]&&board[7]==board[8])&&(board[8]!='')||
+        (board[2]==board[5]&&board[5]==board[8])&&(board[8]!='')||
+        (board[0]==board[3]&&board[3]==board[6])&&(board[6]!='')||
+        (board[1]==board[4]&&board[4]==board[7])&&(board[7]!='')||
+        (board[0]==board[4]&&board[4]==board[8]&&(board[8]!='')||
+        (board[2]==board[4]&&board[4]==board[6])&&(board[6]!='')))
+      
+       
+     { 
+     
+      return result.textContent = `Congrats ${activePlayer.getName()}. You won`;
+    }
+     else{
+      return 'keep playing'
+     }
    }
-      // Check for win or tie (logic needs to be implemented)
-      // ... (implement win and tie checking logic here)
-      //I guess I nec to loop through the board array and figure out what indexes has current player symbol
-  const winningCombinations = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [2, 5, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [0, 4, 8],
-      [2, 4, 6]
-    ];
-
-checkWinner();{
-
-}*/
-  
-      switchPlayer();
+   board = gameBoardModule.getBoard();
+     switchPlayer();
+ checkWinners(board);
+   
       
     };
   
+
+
     displayControllerModule.setCellClickListener(handleCellClick);
      displayControllerModule.setResetButton();// optionally share anything below
     // return {};
