@@ -47,7 +47,7 @@ const displayControllerModule = (function() {
       gameBoardModule.cleanBoard();
       updateGrid();
       result.textContent = '';
-      setCellClickListener();
+      setCellClickListener(gameControllerModule.handleCellClick);
   
     });
   };
@@ -76,8 +76,10 @@ const gameControllerModule = (function() {
   const switchPlayer = () => {
     activePlayer = activePlayer === xPlayer ? oPlayer : xPlayer;
   };
+ 
 
-  const checkWinners = (board) => {
+
+  const isWinner = (board) => {
     const winningCombinations = [
       [0, 1, 2],
       [3, 4, 5],
@@ -96,23 +98,23 @@ const gameControllerModule = (function() {
             console.log(counter)
         }
       })
-
+if (counter>=5 ){
     for (const combination of winningCombinations) {
       const [a, b, c] = combination;
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
         result.textContent = `Congrats ${activePlayer.getName()}. You won`;
-        return result,
-        disableCellClickListener();
+        return true;
+     //   disableCellClickListener();
       }
       else if(counter==9){
         result.textContent = `it is tie`;
-      return result;
+      return false;
      }
-
+}
       }
     
     //draw function 
-    return 'keep playing';
+    return false;
   }
 
 
@@ -124,9 +126,15 @@ const gameControllerModule = (function() {
     const clickedIndex = parseInt(event.target.dataset.cellIndex);
     gameBoardModule.updateBoard(clickedIndex, activePlayer.getSymbol());
     displayControllerModule.updateGrid();
-    switchPlayer();
+    
     const board = gameBoardModule.getBoard();
-    checkWinners(board);
+    
+   if(isWinner(board) ===false){
+    switchPlayer();
+  }
+  else{
+disableCellClickListener()
+  }
   };
 
   const gridItems = document.querySelectorAll(".grid-item");
@@ -136,6 +144,8 @@ const gameControllerModule = (function() {
   displayControllerModule.setResetButton();
 
   displayControllerModule.setCellClickListener(handleCellClick);
-
+return{
+  handleCellClick
+}
   //how to enable event listener after I disable after somebody win
 })();
