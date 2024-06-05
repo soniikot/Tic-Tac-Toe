@@ -116,7 +116,6 @@ const gameControllerModule = (function () {
       let randomIndex = Math.floor(Math.random() * 9);
       if (board[randomIndex] === "") {
         activePlayer.getSymbol();
-        switchPlayer();
       } else if (board.every((cell) => cell !== "")) {
         return "it is tie";
       } else {
@@ -124,11 +123,13 @@ const gameControllerModule = (function () {
       }
       return randomIndex;
     };
-    gameBoardModule.updateBoard(randomEmptyCell(), activePlayer.getSymbol());
-    displayControllerModule.updateGrid();
     if (isWinner(board) === true) {
       disableCellClickListener();
+    } else {
       switchPlayer();
+
+      gameBoardModule.updateBoard(randomEmptyCell(), activePlayer.getSymbol());
+      displayControllerModule.updateGrid();
     }
   };
 
