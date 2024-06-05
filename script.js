@@ -1,4 +1,3 @@
-// Gameboard Module (using IIFE for single instance)
 const gameBoardModule = (function () {
   let board = ["", "", "", "", "", "", "", "", ""];
 
@@ -21,7 +20,6 @@ const gameBoardModule = (function () {
   };
 })();
 
-// Display Controller Module (uses gameBoardModule)
 const displayControllerModule = (function () {
   const gridItems = document.querySelectorAll(".grid-item");
   const resetButton = document.querySelector(".reset-button");
@@ -55,7 +53,6 @@ const displayControllerModule = (function () {
   };
 })();
 
-// Player Factory
 const createPlayer = (playerName, playerSymbol) => {
   return {
     getName: () => playerName,
@@ -63,7 +60,6 @@ const createPlayer = (playerName, playerSymbol) => {
   };
 };
 
-// Game Controller Module
 const gameControllerModule = (function () {
   let xPlayer = createPlayer("playerOne", "X");
   let oPlayer = createPlayer("playerTwo", "O");
@@ -89,24 +85,22 @@ const gameControllerModule = (function () {
     board.forEach((tile) => {
       if (tile !== "") {
         counter++;
-        console.log(counter);
       }
     });
+    console.log(counter);
     if (counter >= 5) {
       for (const combination of winningCombinations) {
         const [a, b, c] = combination;
         if (board[a] && board[a] === board[b] && board[a] === board[c]) {
           result.textContent = `Congrats ${activePlayer.getName()}. You won`;
           return true;
-          //   disableCellClickListener();
-        } else if (counter == 9) {
+        } else if (counter === 9) {
           result.textContent = `it is tie`;
           return false;
         }
       }
     }
 
-    //draw function
     return false;
   };
 
@@ -123,6 +117,8 @@ const gameControllerModule = (function () {
       if (board[randomIndex] === "") {
         activePlayer.getSymbol();
         switchPlayer();
+      } else if (board.every((cell) => cell !== "")) {
+        return "it is tie";
       } else {
         return randomEmptyCell();
       }
@@ -130,6 +126,10 @@ const gameControllerModule = (function () {
     };
     gameBoardModule.updateBoard(randomEmptyCell(), activePlayer.getSymbol());
     displayControllerModule.updateGrid();
+    if (isWinner(board) === true) {
+      disableCellClickListener();
+      switchPlayer();
+    }
   };
 
   const handleCellClick = (event) => {
