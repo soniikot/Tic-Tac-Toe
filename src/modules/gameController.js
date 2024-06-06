@@ -9,6 +9,8 @@ const gameControllerModule = (function() {
   let oPlayer = createPlayer("playerTwo", "O");
   let activePlayer = xPlayer;
 
+  
+
   const switchPlayer = () => {
     activePlayer = activePlayer === xPlayer ? oPlayer : xPlayer;
   };
@@ -21,6 +23,7 @@ const gameControllerModule = (function() {
     const board = gameBoardModule.getBoard();
 
     const randomEmptyCell = () => {
+ 
       const randomIndex = Math.floor(Math.random() * 9);
       if (board[randomIndex] === "") {
         activePlayer.getSymbol();
@@ -35,11 +38,21 @@ const gameControllerModule = (function() {
 
       gameBoardModule.updateBoard(randomEmptyCell(), activePlayer.getSymbol());
       displayControllerModule.updateGrid();
-      switchPlayer();
+
+      const updatedBoard = gameBoardModule.getBoard();
+      const { winner, message } = isWinner(updatedBoard, activePlayer);
+      const result = document.querySelector('.comments');
+      if (!winner) {
+        switchPlayer();
+      
+      } else {
+        result.textContent = message;
+        disableCellClickListener();
+      }
     }
   
   const handleCellClick = (event) => {
-    
+ 
     const clickedIndex = parseInt(event.target.dataset.cellIndex);
     gameBoardModule.updateBoard(clickedIndex, activePlayer.getSymbol());
     displayControllerModule.updateGrid();

@@ -18,18 +18,20 @@ export const isWinner = (board, activePlayer) => {
   board.forEach((tile) => {
     if (tile !== "") {
       counter++;
+      
     }
   });
-
+  console.log(counter)
   if (counter >= 5) {
     for (const combination of winningCombinations) {
       const [a, b, c] = combination;
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-        return { winner: true, message: `Congrats playerOne. You won` };
+        return { winner: true, message: `Congrats ${activePlayer.getName()}. You won` };
       }
     }
     if (counter === 9) {
-      return { winner: false, message: `It is a tie` };
+      debugger;
+      return { winner: true, message: `It is a tie` };
     }
   }
   return { winner: false, message: '' };
