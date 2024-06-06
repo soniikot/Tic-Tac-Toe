@@ -111,9 +111,10 @@ const gameControllerModule = (function () {
   };
 
   const computerMove = () => {
-    let board = gameBoardModule.getBoard();
+    const board = gameBoardModule.getBoard();
+
     const randomEmptyCell = () => {
-      let randomIndex = Math.floor(Math.random() * 9);
+      const randomIndex = Math.floor(Math.random() * 9);
       if (board[randomIndex] === "") {
         activePlayer.getSymbol();
       } else if (board.every((cell) => cell !== "")) {
@@ -123,6 +124,7 @@ const gameControllerModule = (function () {
       }
       return randomIndex;
     };
+    
     if (isWinner(board) === true) {
       disableCellClickListener();
     } else {
