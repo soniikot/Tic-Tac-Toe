@@ -48,12 +48,14 @@ const gameControllerModule = (function() {
       } else {
         result.textContent = message;
         disableCellClickListener();
+        switchPlayer();
       }
     }
   
   const handleCellClick = (event) => {
  
     const clickedIndex = parseInt(event.target.dataset.cellIndex);
+    
     gameBoardModule.updateBoard(clickedIndex, activePlayer.getSymbol());
     displayControllerModule.updateGrid();
    

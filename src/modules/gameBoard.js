@@ -7,6 +7,8 @@ const gameBoardModule = (function() {
     if (board[index] === "") {
       board[index] = playerSymbol;
     }
+    else(alert('you can not click here twice again')
+   )
   };
 
   const cleanBoard = () => {

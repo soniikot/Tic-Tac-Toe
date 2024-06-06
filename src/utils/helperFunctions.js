@@ -30,7 +30,7 @@ export const isWinner = (board, activePlayer) => {
       }
     }
     if (counter === 9) {
-      debugger;
+   
       return { winner: true, message: `It is a tie` };
     }
   }
