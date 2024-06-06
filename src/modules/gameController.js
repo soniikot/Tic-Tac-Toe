@@ -27,8 +27,7 @@ const gameControllerModule = (function() {
       const randomIndex = Math.floor(Math.random() * 9);
       if (board[randomIndex] === "") {
         activePlayer.getSymbol();
-      } else if (board.every((cell) => cell !== "")) {
-        return "it is tie";
+      
       } else {
         return randomEmptyCell();
       }
@@ -55,6 +54,11 @@ const gameControllerModule = (function() {
   const handleCellClick = (event) => {
  
     const clickedIndex = parseInt(event.target.dataset.cellIndex);
+
+    if (!gameBoardModule.updateBoard(clickedIndex, activePlayer.getSymbol())) {
+      alert('You cannot click here twice. Try another cell.');
+      return;
+    }
     
     gameBoardModule.updateBoard(clickedIndex, activePlayer.getSymbol());
     displayControllerModule.updateGrid();

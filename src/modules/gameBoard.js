@@ -6,9 +6,9 @@ const gameBoardModule = (function() {
   const updateBoard = (index, playerSymbol) => {
     if (board[index] === "") {
       board[index] = playerSymbol;
+      return true;
     }
-    else(alert('you can not click here twice again')
-   )
+    return false;
   };
 
   const cleanBoard = () => {
