@@ -1,3 +1,7 @@
+import createPlayer from '../modules/player.js';
+import gameControllerModule from '../modules/gameController.js';
+
+
 export const isWinner = (board, activePlayer) => {
   const winningCombinations = [
     [0, 1, 2],
@@ -21,7 +25,7 @@ export const isWinner = (board, activePlayer) => {
     for (const combination of winningCombinations) {
       const [a, b, c] = combination;
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-        return { winner: true, message: `Congrats ${activePlayer.getName()}. You won` };
+        return { winner: true, message: `Congrats playerOne. You won` };
       }
     }
     if (counter === 9) {
