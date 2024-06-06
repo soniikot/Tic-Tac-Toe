@@ -1,5 +1,4 @@
-// Gameboard Module (using IIFE for single instance)
-const gameBoardModule = (function() {
+const gameBoardModule = (function () {
   let board = ["", "", "", "", "", "", "", "", ""];
 
   const getBoard = () => [...board];
@@ -17,15 +16,14 @@ const gameBoardModule = (function() {
   return {
     getBoard,
     updateBoard,
-    cleanBoard
+    cleanBoard,
   };
 })();
 
-// Display Controller Module (uses gameBoardModule)
-const displayControllerModule = (function() {
+const displayControllerModule = (function () {
   const gridItems = document.querySelectorAll(".grid-item");
-  const resetButton = document.querySelector('.reset-button');
-  const result = document.querySelector('.comments');
+  const resetButton = document.querySelector(".reset-button");
+  const result = document.querySelector(".comments");
 
   const updateGrid = () => {
     const board = gameBoardModule.getBoard();
@@ -39,27 +37,22 @@ const displayControllerModule = (function() {
     gridItems.forEach((item) => item.addEventListener("click", callback));
   };
 
-  
-  
-
   const setResetButton = () => {
-    resetButton.addEventListener('click', () => {
+    resetButton.addEventListener("click", () => {
       gameBoardModule.cleanBoard();
       updateGrid();
-      result.textContent = '';
+      result.textContent = "";
       setCellClickListener(gameControllerModule.handleCellClick);
-  
     });
   };
 
   return {
     updateGrid,
     setCellClickListener,
-    setResetButton
+    setResetButton,
   };
 })();
 
-// Player Factory
 const createPlayer = (playerName, playerSymbol) => {
   return {
     getName: () => playerName,
@@ -67,8 +60,7 @@ const createPlayer = (playerName, playerSymbol) => {
   };
 };
 
-// Game Controller Module
-const gameControllerModule = (function() {
+const gameControllerModule = (function () {
   let xPlayer = createPlayer("playerOne", "X");
   let oPlayer = createPlayer("playerTwo", "O");
   let activePlayer = xPlayer;
@@ -76,8 +68,6 @@ const gameControllerModule = (function() {
   const switchPlayer = () => {
     activePlayer = activePlayer === xPlayer ? oPlayer : xPlayer;
   };
- 
-
 
   const isWinner = (board) => {
     const winningCombinations = [
@@ -88,64 +78,84 @@ const gameControllerModule = (function() {
       [1, 4, 7],
       [2, 5, 8],
       [0, 4, 8],
-      [2, 4, 6]
+      [2, 4, 6],
     ];
 
     let counter = 0;
     board.forEach((tile) => {
-        if( tile!== "") {
-            counter++;
-            console.log(counter)
+      if (tile !== "") {
+        counter++;
+      }
+    });
+    console.log(counter);
+    if (counter >= 5) {
+      for (const combination of winningCombinations) {
+        const [a, b, c] = combination;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+          result.textContent = `Congrats ${activePlayer.getName()}. You won`;
+          return true;
+        } else if (counter === 9) {
+          result.textContent = `it is tie`;
+          return false;
         }
-      })
-if (counter>=5 ){
-    for (const combination of winningCombinations) {
-      const [a, b, c] = combination;
-      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-        result.textContent = `Congrats ${activePlayer.getName()}. You won`;
-        return true;
-     //   disableCellClickListener();
       }
-      else if(counter==9){
-        result.textContent = `it is tie`;
-      return false;
-     }
-}
-      }
-    
-    //draw function 
-    return false;
-  }
+    }
 
+    return false;
+  };
 
   const disableCellClickListener = () => {
-    gridItems.forEach((item) => item.removeEventListener("click", handleCellClick));
+    gridItems.forEach((item) =>
+      item.removeEventListener("click", handleCellClick)
+    );
+  };
+
+  const computerMove = () => {
+    const board = gameBoardModule.getBoard();
+
+    const randomEmptyCell = () => {
+      const randomIndex = Math.floor(Math.random() * 9);
+      if (board[randomIndex] === "") {
+        activePlayer.getSymbol();
+      } else if (board.every((cell) => cell !== "")) {
+        return "it is tie";
+      } else {
+        return randomEmptyCell();
+      }
+      return randomIndex;
+    };
+    
+    if (isWinner(board) === true) {
+      disableCellClickListener();
+    } else {
+      switchPlayer();
+
+      gameBoardModule.updateBoard(randomEmptyCell(), activePlayer.getSymbol());
+      displayControllerModule.updateGrid();
+    }
   };
 
   const handleCellClick = (event) => {
     const clickedIndex = parseInt(event.target.dataset.cellIndex);
     gameBoardModule.updateBoard(clickedIndex, activePlayer.getSymbol());
     displayControllerModule.updateGrid();
-    
+    computerMove();
     const board = gameBoardModule.getBoard();
-    
-   if(isWinner(board) ===false){
-    switchPlayer();
-  }
-  else{
-disableCellClickListener()
-  }
+
+    if (isWinner(board) === false) {
+      switchPlayer();
+    } else {
+      disableCellClickListener();
+    }
   };
 
   const gridItems = document.querySelectorAll(".grid-item");
-  const result = document.querySelector('.comments');
+  const result = document.querySelector(".comments");
 
-  
   displayControllerModule.setResetButton();
 
   displayControllerModule.setCellClickListener(handleCellClick);
-return{
-  handleCellClick
-}
-  //how to enable event listener after I disable after somebody win
+  return {
+    handleCellClick,
+  };
 })();
